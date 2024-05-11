@@ -1,0 +1,275 @@
+/*
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}*/
+select {
+    /* A reset of styles, including removing the default dropdown arrow*/
+    /*appearance: none;*/
+    /* Additional resets for further consistency*/
+    background-color: transparent;
+    border: none;
+    padding: 0 1em 0 0;
+    margin: 0;
+    width: 100%;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+  }
+
+html, body {
+    min-height: 100%; 
+    background: linear-gradient(180deg, #FFFFFF 0%, #F2F5FA 100%);
+}
+
+aside {    
+    background: none;
+    background-size: cover;
+    min-height: 100px;
+    height: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 50px;
+}
+
+header {
+    position: relative;
+    background: url("img/supermarket.jpg") center;
+    
+    top: inherit;
+    left: inherit;
+    display: inline-block;
+    width: 100%;
+    height: 240px;
+    margin-bottom: 20px;
+}
+
+#icons {
+    position: relative;    
+    margin-left: 50px;
+    margin-top: 30px;
+    width: 110px;
+    height: 40px;
+    background: white;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+#header-links {    
+    margin-right: 50px;
+    margin-top: 30px;
+    
+    border-radius: 10px;
+    background: rgba(0,0,0,0.6);    
+    color: white;
+}
+
+#header-links > a {
+    text-decoration: none;
+    margin: 0 20px 0 20px;
+}
+
+#header-links > a > span {
+    color: white;
+}
+
+#p-logo {    
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: auto;
+}
+
+#p-label {
+    position: absolute;
+    left: 40px;
+    top: 20px;
+}
+
+header h3 {
+    position: relative;
+    min-width: 100px;
+    padding: 10px;
+    width: fit-content;
+    margin: 0 auto;
+
+    border-radius: 10px;
+    background: rgba(0,0,0,0.6);    
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+}
+
+article {
+    position: relative;
+    top: inherit;
+    left: inherit;
+    width: 80%;
+    margin: 0px auto;
+    padding: 20px;
+}
+
+h3 {
+    width: 90%;
+    margin: 0px auto;
+    text-align: center;
+}
+
+button {
+    position: inherit;
+    right: inherit;
+    top: inherit;
+    height: inherit;
+    width: inherit;
+    background: inherit;
+    border: inherit;
+    padding: inherit;
+    background: inherit;
+}
+
+button:hover {
+    background-image: none;
+}
+
+.order-by-container {
+    width: 75px;
+    position: absolute;
+    top: 0;
+    right: -100px;
+}
+
+.order-by-container .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: #FFF;
+    color: #4066a5;
+    text-align: center;
+    border: 1px solid #4066a5;
+    border-radius: 6px;
+    padding: 5px;
+  
+    /* Position the tooltip */
+    position: absolute;
+    top: -10px;
+    left: 75px;
+    z-index: 1;
+  }
+  
+  .order-by-container:hover .tooltiptext {
+    visibility: visible;
+  }
+
+.form-control {
+    max-height: 40px;
+    height: 10vw;
+    max-width: 300px;
+    width: 25vw;
+    padding-left: 10px;
+    margin: 0px auto;
+    
+    font-family: Arial;
+    font-size: 16px;
+    line-height: 28px;
+    box-sizing: border-box;
+}
+
+.input-group-button {
+    display: inline-block;
+    width: 60px;
+}
+
+.search-button {
+    box-sizing: border-box;
+    height: 40px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+    line-height: 28px;
+    text-align: center;
+    vertical-align: middle;
+    color: #4066a5;
+    border: 1px solid #4066a5;
+    border-radius: 5px;
+}
+
+.search-button:hover, .search-button:focus {
+    background-color: rgba(64, 102, 165, 0.2);    
+    box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
+    cursor: pointer;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+#categories select {
+    width: 200px;
+}
+
+thead th:nth-child(1) {
+    width: 30%;
+}
+
+thead th:nth-child(3) {
+    width: 30%;
+}
+
+thead th:nth-child(4) {
+    width: 10%;
+}
+    
+.table th, .table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #E3E3E4;
+}
+    
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #E3E3E4;
+    background-color: rgb(79, 226, 79, 0.75);
+}
+    
+.table tbody + tbody {
+    border-top: 2px solid #E3E3E4;
+}
+
+.datetime {
+    text-align: center;
+}
+
+.sorting-choice {
+    position: relative;
+}
+
+.sorting-choice > label {
+    padding: 5px 30%;
+}
+
+.sorting-by {
+    display: inline-block;
+    position: absolute;
+    right: 20px;
+}
+
+.delete-form {
+    text-align: center;
+    margin: auto 0px 20px 0;
+}
+
+.delete-button {
+    border: 1px solid red;
+    width: 150px;
+    height: 30px;
+    padding: 5px;
+    margin: auto 5px;
+    border: 1px solid #4066a5;
+    border-radius: 5px;
+}
+
+.delete-button:hover {
+    cursor: pointer;
+    background-color: rgba(64, 102, 165, 0.2);    
+    box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
+}

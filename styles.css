@@ -1,0 +1,684 @@
+@viewport {
+    width: device-width;
+    zoom: 1.0;
+}
+
+@-ms-viewport {
+    width: device-width ;
+  }
+
+body {
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+aside {
+    background: linear-gradient(180deg, #FFFFFF 0%, #F2F5FA 100%);
+    height:1080px;
+    width: 680px;
+    display: inline-block;
+}
+
+header {
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    height: 40px;
+    width: 480px;
+    display: inline;
+}
+
+header > div {
+    display: inline-block;
+}
+
+#p-logo {
+    display: inline-block;
+    height: 40px;   
+    width: 36px;
+    background: url("img/piggy1.png") no-repeat center;
+    margin-right: 15px;
+}
+
+#p-label {
+    display: inline-block;
+    position: absolute;
+    left: 25px;
+    bottom: 5px;
+    height: 16px;
+    width: 78px;
+    background: url("img/home.png") no-repeat center;
+}
+
+#header-links {
+    position: absolute;
+    top: 14px;
+    right: 0px;
+    height: 26px;    
+    text-align: middle;    
+}
+
+#header-links > a {
+    text-decoration: none;
+    margin-left: 30px;
+}
+
+#header-links > a > span {
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #6A707B;
+}
+
+article {
+    position: absolute;
+    top: 374px;
+    left: 140px;
+}
+
+#success-logo {
+    width: 44px;
+    height: 70px;
+    position: absolute;
+    top: -100px;
+    left: 0px;
+    background-image: url("img/success-logo.png");
+}
+
+#success-logo div {
+    position: absolute;
+    height: 2px;
+    opacity: 0.3;
+    background-color: #4066A5;
+}
+
+#success-logo div:nth-child(1) {
+    width: 26px;
+    top: 2px;
+    left: 9px;
+}
+
+#success-logo div:nth-child(2) {
+    width: 6px;
+    top: 31px;
+    left: 19px;
+}
+
+#success-logo div:nth-child(3) {
+    width: 30px;
+    height: 2px;
+    top: 44px;
+    left: 7px;
+}
+
+#success-logo div:nth-child(4) {
+    width: 14px;
+    height: 8px;
+    top: 52px;
+    left: 15px;
+}
+
+#success-logo div:nth-child(5) {
+    width: 30px;
+    top: 66px;
+    left: 7px;
+}
+
+h3 {
+    width: 400px;
+    height: 44px;
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 44px;
+    color: #131821;
+    margin: 0px;
+}
+
+h5 {
+    margin-top: 15px;
+    width: 400px;
+    height: 56px;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 28px;
+    color: #6A707B;
+    margin-bottom: 50px;
+}
+
+form {
+    position: relative;
+}
+
+#email-input {
+    position: relative;
+    left: -40px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px 44px;
+    width: 663px;
+    height: 70px;
+    background: #FFFFFF;
+    border: 1px solid #E3E3E4;    
+    border-left: 4px solid #107907;
+    box-sizing: border-box;
+
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6A707B;
+}
+
+#password-input {
+    position: relative;
+    left: -40px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px 44px;
+    width: 663px;
+    height: 70px;
+    background: #FFFFFF;
+    border: 1px solid #E3E3E4;    
+    border-left: 4px solid #107907;
+    box-sizing: border-box;
+
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6A707B;
+}
+
+#password-verify {
+    position: relative;
+    left: -40px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px 44px;
+    width: 663px;
+    height: 70px;
+    background: #FFFFFF;
+    border: 1px solid #E3E3E4;    
+    border-left: 4px solid #107907;
+    box-sizing: border-box;
+
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #6A707B;
+}
+
+form > span {
+    position: absolute;
+    left: 7px;
+    top: 22px;
+    height: 24px;
+
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #131821;
+}
+
+#email-input:hover {
+    border: 1px solid #4066A5;    
+    border-left: 4px solid #4066A5;
+    outline: none;    
+    padding-left: 90px;
+}
+
+#email-input:hover + button {
+    background-image: url("img/ic_arrow-focus.svg");
+}
+
+/* style-guide: on-hover - hiding default placeholder and 
+displaying usually hidden <span> "email ", adjusting padding */
+#email-input-hover-text {
+    display: none;
+}
+
+#email-input:hover::placeholder {
+    color: rgba(0, 0, 0, 0);
+}
+
+#email-input:hover ~ #email-input-hover-text {
+    display: inline;
+}
+
+#email-input:focus {
+    box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
+    outline: none;
+}
+
+button {
+    position: relative;
+    right: 105px;
+    top: 0px;
+    height: 14px;
+    width: 24px;
+    background: none;
+    border: 0px;
+    padding: 0;
+    background: url("img/ic_arrow.svg") no-repeat right center;
+}
+
+button:hover {
+    background-image: url("img/ic_arrow-focus.svg");
+    cursor: pointer;
+}
+
+#pretend-button {
+    height: 25px;
+    width: 40px;
+    border-radius: 45px;
+    
+    position: absolute;
+    right: 97px;
+    top: 20px;
+    box-sizing: border-box;
+    z-index: 3;
+}
+
+#pretend-button:hover {
+    cursor: pointer;
+}
+
+#pretend-button:hover ~ #email-input {
+    border: 1px solid #4066A5;    
+    border-left: 4px solid #4066A5;
+    outline: none;    
+    padding-left: 90px;
+}
+
+#pretend-button:hover ~ #email-input-hover-text {
+    display: inline;
+}
+
+#pretend-button:hover ~ #email-input::placeholder {
+    color: rgba(0, 0, 0, 0);
+}
+
+#pretend-button:hover ~ button {
+    background-image: url("img/ic_arrow-focus.svg");
+}
+
+.checkbox {
+    margin-top: 54px;
+    margin-bottom: 50px;
+    position: relative;
+    padding: 0;
+}
+
+.checkbox > input {
+    width: 26px;
+    height: 26px;
+    vertical-align: middle;
+}
+
+.checkbox > label {
+    height: 28px;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 28px;
+    color: #6A707B;
+    display: inline-block; 
+    vertical-align: middle;
+}
+
+.checkbox > label > a {
+    color: #131821;
+}
+
+.checkbox > label > a:hover {
+    color: #4066A5;
+}
+
+.checkbox > label > a:active {
+    color: #233759;
+}
+
+/*style-guide: applying custom checkmark*/
+.checkbox input[type="checkbox"] {
+    opacity: 0;
+}
+
+.checkbox label::before {
+    content: "";
+    display: inline-block;
+    vertical-align: middle;
+    position: absolute;
+    
+    height: 26px;
+    width: 26px;
+    margin-right: 15px;
+
+    left: -33px;
+    top: 2px;
+    
+    background: #FFFFFF;
+    border: 1px solid #E3E3E4;
+    box-sizing: border-box;
+    border-radius: 3px;   
+}
+
+.checkbox label {
+    position: relative;
+    padding-left: 5px;
+}
+
+.checkbox input[type="checkbox"]:checked + label::before {
+    background: #4066A5 url(img/ic_checkmark.svg) no-repeat center;
+}
+
+.error {
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 28px;
+    width: fit-content;
+    padding: 0 10px;
+    color: #FF0000;
+    background-color: #fcbdbd;
+    border-bottom: 1px solid #FF0000;
+    border-left: 4px solid #FF0000;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: inline-block;
+}
+
+#submit-form1 {
+    min-width: 100px;
+    min-height: 100px;
+    position: relative;
+    border: 1px solid #f70505;  
+}
+
+.error1, .error2, .error4 {
+    position: absolute;
+    left: 0px;
+    top: 70px;
+    max-width: 70%;
+}
+
+.error3 {
+    position: absolute;
+    left: 0px;
+    top: 230px;
+}
+
+.extra-margin-top {
+    margin-top: 20px;
+}
+
+#line {
+    width: 400px;
+    border-top: 1px solid #E3E3E4;
+}
+
+.all-icons {
+    margin-top: 50px;
+    width: 400px;
+    align-items: center;
+    padding: 0px 60px;
+    box-sizing: border-box;
+}
+
+.icon {
+    width: 46px;
+    height: 46px;
+    margin: 0px 10px;
+
+    border: 2px solid #E3E3E4;
+    border-radius: 45px;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+.icon:hover, .icon:active {
+    border: 0px;
+    box-shadow: 0px 20px 40px rgba(19, 24, 33, 0.3);
+}
+
+.icon-fb {
+    background: url("img/ic_facebook.svg") no-repeat center;
+}
+.icon-fb:hover {
+    background: #4267B2 url("img/ic_facebook_white.svg") no-repeat center;
+}
+.icon-fb:active {
+    background: #2F4A80 url("img/ic_facebook_white.svg") no-repeat center;
+}
+
+.icon-ig {
+    background: url("img/ic_instagram.svg") no-repeat center;
+}
+.icon-ig:hover {
+    background: #C13584 url("img/ic_instagram_white.svg") no-repeat center;
+}
+.icon-ig:active {
+    background: #8F2762 url("img/ic_instagram_white.svg") no-repeat center;
+}
+
+.icon-tw {
+    background: url("img/ic_twitter.svg") no-repeat center;
+}
+.icon-tw:hover {
+    background: #1DA1F2 url("img/ic_twitter_white.svg") no-repeat center;
+}
+.icon-tw:active {
+    background: #177FBF url("img/ic_twitter_white.svg") no-repeat center;
+}
+
+.icon-yt {
+    background: url("img/ic_youtube.svg") no-repeat center;
+}
+.icon-yt:hover {
+    background: #FF0000 url("img/ic_youtube_white.svg") no-repeat center;
+}
+.icon-yt:active {
+    background: #CC0000 url("img/ic_youtube_white.svg") no-repeat center;
+}
+
+section {
+    display: inline-block;
+    position: absolute;
+    left: 680px;
+    height: 1085px;
+    width: calc(100% - 680px);
+    background: url("img/supermarket.jpg") no-repeat left;
+    background-size: cover;
+    z-index: -1;
+}
+
+@media screen and (max-width:500px) {
+    /* CSS for screens that are 500 pixels or less will be put in this section */
+       
+    aside {
+        background: none;
+        height: 0;
+        width: 100%;
+    }
+    
+    header {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        height: 66px;
+        width: 100%;
+        display: inline;
+        background: #FFFFFF;
+    }
+
+    #p-logo {
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+    
+    #p-label {
+        display: none;
+    }
+
+    #header-links {
+        top: 21px;
+        right: 0;
+        height: 24px;
+    }
+
+    #header-links > a {
+        margin-right: 20px;
+        margin-left: 0;
+    }
+    
+    #header-links > a > span {
+        font-size: 14px;
+        line-height: 24px;
+    }
+
+    section {
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: 66px;
+        width: 100%;
+        height: calc(100% - 66px);
+        background: url("img/supermarket.jpg") no-repeat center;
+    }
+
+    article {
+        position: relative;
+        top: 254px;
+        left: 0;
+        background: linear-gradient(180deg, #FFFFFF 0%, #F2F5FA 100%);
+        width: calc(100vw - 40px);
+        margin: auto 20px;
+        padding: 30px 20px 0px 20px;
+        box-sizing: border-box;
+    }
+
+    #success-logo {
+        z-index: 3;
+        position: relative;
+        left: 0px;
+        top: 0px;
+        margin-bottom: 39px;
+    }
+
+    h3 {
+        width: calc(100vw - 80px);
+        height: 34px;
+        font-size: 24px;
+        line-height: 34px;
+        margin: 0 0 10px 0;
+    }
+    
+    h5 {
+        width: calc(100vw - 80px);
+        height: 52px;
+        font-size: 14px;
+        line-height: 26px;
+        margin: 0 0 20px 0;
+    }
+
+    #email-input {
+        position: relative;
+        left: 0;
+        margin: 0;
+        padding-left: 15px;
+        width: 100%;
+        height: 60px;
+    }
+
+    #email-input:hover { 
+        padding-left: 57px;
+    }
+
+    #pretend-button:hover ~ #email-input {
+        padding-left: 57px;
+    }
+
+    form {
+        margin: 0;
+        padding: 0;
+    }
+
+    form > span {
+        left: 18px;
+        top: 17px;
+    }
+    
+    button {
+        position: absolute;
+        top: 23px;
+        right: 15px;
+    }
+    #pretend-button {        
+        position: absolute;
+        right: 7px;
+        top: 17px;
+    }
+    
+    .checkbox {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .error {
+        font-size: 13px;
+        line-height: 20px;
+    }
+
+    .error1, .error2, .error4 {
+        position: absolute;
+        left: 0;
+        top: 39px;
+        max-width: 70%;
+    }
+    
+    .error3 {
+        position: absolute;
+        left: 40px;
+        top: 110px;
+    }
+
+    .error4 {
+        left: 0;
+        max-width: 90%;        
+        opacity: 80%;
+    }
+    
+    #line {
+        width: inherit;
+    }
+    
+    .all-icons {
+        margin: 20px auto;
+        width: fit-content;
+        padding: 0px 0px 20px 0px;
+    }
+    
+    .icon {
+        margin: 0px 5px;
+    }    
+}
