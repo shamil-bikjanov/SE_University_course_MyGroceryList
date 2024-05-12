@@ -113,6 +113,7 @@ $statement -> execute();
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
                     <a href="quick-compare.php"><span>Quick compare</span></a>
+                    <a href="my-history.php"><span>My History</span></a>
                     <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
                     <a href="admin-page.php" id="contacts"><span>Contacts</span></a>
                     <?php } ?>

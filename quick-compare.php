@@ -14,6 +14,7 @@ $store1 = '';
 $store2 = '';
 $store3 = '';
 $testMessage = '';
+$groceryListTitle = $_SESSION["active-userID"].'MyGroceryList';
 
 // STORES TABLE AND QUERY
 $statement = $pdo -> prepare("SELECT distinct STORE_ID, Store_Name FROM STORES ORDER BY Store_Name");
@@ -58,7 +59,7 @@ $categories = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 // PRODUCTS TABLE AND QUERY
 $statement = $pdo -> prepare("  SELECT DISTINCT prod.PRODUCT_ID PRODUCT_ID, prod.Prod_category Prod_category, prod.Prod_title Prod_title, groc.Alert_Active Alert_Active
-                                FROM MyGroceryList groc
+                                FROM $groceryListTitle groc
                                 INNER JOIN PRODUCTS as prod ON groc.PRODUCT_ID = prod.PRODUCT_ID
                                 ORDER BY prod.Prod_category, prod.Prod_title");
 $statement -> execute();
@@ -92,6 +93,7 @@ $products = $statement -> fetchAll(PDO::FETCH_ASSOC);
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
                     <a href="quick-compare.php"><span>Quick compare</span></a>
+                    <a href="my-history.php"><span>My History</span></a>
                     <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
                     <a href="admin-page.php" id="contacts"><span>Contacts</span></a>
                     <?php } ?>
