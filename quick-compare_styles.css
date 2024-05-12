@@ -293,3 +293,7 @@ thead th:nth-child(4) {
     background-color: rgba(161, 185, 54, 0.747);    
     box-shadow: 0px 30px 40px rgba(19, 24, 33, 0.06);
 }
+
+.gap-row {
+    background-color: rgba(169, 169, 169,0.5);
+}

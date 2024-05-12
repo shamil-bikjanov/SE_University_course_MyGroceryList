@@ -2,65 +2,13 @@
 
 require_once "DBconnect.php";
 
+session_start();
 $myConnection = new MagebitTask();
 $pdo = $myConnection -> connect();
-/*
-//declaring key initial values for page display,
-//and getting user-selected choices during user interaction
-$search = $_GET['search'] ?? '';
-$sortBy = $_GET['sort-by'] ?? 'datetime';
-$sortOrder = $_GET['order'] ?? 'ASC';
-$filterButton = $_GET['filter-button'] ?? '';
 
-//all content are extracted from database in order to filter unique ones (filter buttons)
-$statement = $pdo -> prepare("SELECT code FROM emails ORDER BY $sortBy $sortOrder");
-$statement -> execute();
-$emails = $statement -> fetchAll(PDO::FETCH_ASSOC);
-
-//creating single dimention array from obtained earlier associative array
-$codesArray = array();
-$i = 0;
-foreach ($emails as $email) {
-    $codesArray[$i] = $email['code'];
-    $i++;
+if (!$_SESSION["active-user"]) {
+    header('Location: index.php');
 }
-//using php-function array_unique() to have unique 'codes' for filter-buttons
-$uniqueCodes = array_unique($codesArray);
-
-//using four different sql queries based on 'filters' selected by the user
-//such as 'search' field input and email domain based 'filter-buttons' 
-if ($filterButton) {
-    if ($search) {
-        $statement = $pdo -> prepare(
-            "   SELECT * 
-                FROM emails 
-                WHERE email LIKE :email 
-                AND code = :code 
-                ORDER BY $sortBy $sortOrder");
-        $statement -> bindValue(':email', "%$search%");
-        $statement -> bindValue(':code', $filterButton);        
-    } else {
-        $statement = $pdo -> prepare(
-            "   SELECT * 
-                FROM emails 
-                WHERE code = :code
-                ORDER BY $sortBy $sortOrder");
-        $statement -> bindValue(':code', $filterButton); 
-    }
-} else {
-    if ($search) {
-        $statement = $pdo -> prepare("SELECT * FROM emails WHERE email LIKE :email ORDER BY $sortBy $sortOrder");
-        $statement -> bindValue(':email', "%$search%");
-    } else {
-        $statement = $pdo -> prepare("SELECT * FROM emails ORDER BY $sortBy $sortOrder");
-    }
-}
-
-$statement -> execute();
-$emails = $statement -> fetchAll(PDO::FETCH_ASSOC);
-
-
-*/
 
 $store1 = '';
 $store2 = '';
@@ -119,18 +67,6 @@ $items = $statement -> fetchAll(PDO::FETCH_ASSOC);
 $statement = $pdo -> prepare("SELECT * FROM PRODUCTS ORDER BY PRODUCT_ID");
 $statement -> execute();
 $products = $statement -> fetchAll(PDO::FETCH_ASSOC);
-/*
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $store1 = $_POST['store1'];
-    $store1 = $_POST['store2'];
-    $store1 = $_POST['store3'];
-        
-        
-        
-            header('Location: quick-compare.php');
-        }    
-    
-*/
 ?>
 
 <!DOCTYPE html>
@@ -156,7 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
                     <a href="quick-compare.php"><span>Quick compare</span></a>
+                    <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
                     <a href="admin-page.php" id="contacts"><span>Contacts</span></a>
+                    <?php } ?>
+                    <a href="logout.php"><span id="logout">Log-out</span></a>
                 </div>
             </div>
             <h3>Quick compare</h3>
@@ -270,9 +209,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </table>
                 <button type="sumbit" class="delete-button">Refresh</button>
                 </form>
-                
+                <!--
                 <div><?php echo 'stores = '.$store1.' // '.$store2.' // '.$store3 ?></div>  
-                                            
+                                            -->                    
             <footer>                
         </article>        
     </aside>

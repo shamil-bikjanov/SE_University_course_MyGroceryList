@@ -74,6 +74,36 @@ header > div {
     color: #6A707B;
 }
 
+#welcome {
+    width: 75%;
+    max-width: 150px;
+    height: fit-content;
+    margin: 0 auto 50px auto;
+}
+
+#welcome div {
+    height: 50px;
+    text-align: center;
+    background-color: #eeebf3;
+    margin: 0 auto 50px auto;
+    padding: 20px;
+
+    border-radius: 10px;
+    background: rgb(167, 65, 65);    
+    color: white;
+}
+
+#welcome > a {
+    text-decoration: none;
+    width: 100px;
+}
+
+#welcome > a > div {
+    color: white;
+    height: 50px;
+    line-height: 50px;
+}
+
 article {
     position: absolute;
     top: 374px;
@@ -199,6 +229,10 @@ form {
     color: #6A707B;
 }
 
+#password-verify-parent {
+    position: relative;
+}
+
 #password-verify {
     position: relative;
     left: -40px;
@@ -290,7 +324,7 @@ button:hover {
     right: 97px;
     top: 20px;
     box-sizing: border-box;
-    z-index: 3;
+    z-index: 1;
 }
 
 #pretend-button:hover {
@@ -637,6 +671,8 @@ section {
         position: absolute;
         right: 7px;
         top: 17px;
+        background-color: #CC0000;
+        z-index: 100;
     }
     
     .checkbox {

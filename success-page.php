@@ -35,7 +35,7 @@
                 <div></div>
             </div>
             <h3>Thank you for registering!</h3>
-            <h5>You have successfully created your account with "My Grocery List". Use the link in the header to create your first list.</h5>
+            <h5>You have created your account with "My Grocery List". Use the link in the header to create your first list.</h5>
             
             <footer>
                 <div id="line"></div>

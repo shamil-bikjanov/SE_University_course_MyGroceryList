@@ -1,11 +1,13 @@
 <?php 
 
 require_once "DBconnect.php";
-
+session_start();
 $myConnection = new MagebitTask();
 $pdo = $myConnection -> connect();
 
-$statement = $pdo -> prepare('TRUNCATE TABLE MyGroceryList');
+$groceryListTitle = $_SESSION["active-userID"].'MyGroceryList';
+
+$statement = $pdo -> prepare("TRUNCATE TABLE $groceryListTitle");
 $statement -> execute();
 
 $statement = $pdo -> prepare('UPDATE STORES SET selectPosition = 0');

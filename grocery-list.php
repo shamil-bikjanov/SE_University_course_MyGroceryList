@@ -2,70 +2,34 @@
 
 require_once "DBconnect.php";
 
+session_start();
+
 $myConnection = new MagebitTask();
 $pdo = $myConnection -> connect();
-/*
-//declaring key initial values for page display,
-//and getting user-selected choices during user interaction
-$search = $_GET['search'] ?? '';
-$sortBy = $_GET['sort-by'] ?? 'datetime';
-$sortOrder = $_GET['order'] ?? 'ASC';
-$filterButton = $_GET['filter-button'] ?? '';
 
-//all content are extracted from database in order to filter unique ones (filter buttons)
-$statement = $pdo -> prepare("SELECT code FROM emails ORDER BY $sortBy $sortOrder");
-$statement -> execute();
-$emails = $statement -> fetchAll(PDO::FETCH_ASSOC);
-
-//creating single dimention array from obtained earlier associative array
-$codesArray = array();
-$i = 0;
-foreach ($emails as $email) {
-    $codesArray[$i] = $email['code'];
-    $i++;
-}
-//using php-function array_unique() to have unique 'codes' for filter-buttons
-$uniqueCodes = array_unique($codesArray);
-
-//using four different sql queries based on 'filters' selected by the user
-//such as 'search' field input and email domain based 'filter-buttons' 
-if ($filterButton) {
-    if ($search) {
-        $statement = $pdo -> prepare(
-            "   SELECT * 
-                FROM emails 
-                WHERE email LIKE :email 
-                AND code = :code 
-                ORDER BY $sortBy $sortOrder");
-        $statement -> bindValue(':email', "%$search%");
-        $statement -> bindValue(':code', $filterButton);        
-    } else {
-        $statement = $pdo -> prepare(
-            "   SELECT * 
-                FROM emails 
-                WHERE code = :code
-                ORDER BY $sortBy $sortOrder");
-        $statement -> bindValue(':code', $filterButton); 
-    }
-} else {
-    if ($search) {
-        $statement = $pdo -> prepare("SELECT * FROM emails WHERE email LIKE :email ORDER BY $sortBy $sortOrder");
-        $statement -> bindValue(':email', "%$search%");
-    } else {
-        $statement = $pdo -> prepare("SELECT * FROM emails ORDER BY $sortBy $sortOrder");
-    }
-}
-
-$statement -> execute();
-$emails = $statement -> fetchAll(PDO::FETCH_ASSOC);
-
-
-*/
 $selectedCategory = '';
 $selectedProduct = '';
 $lowestPrice = '';
 $lowestPriceStore = '';
 $testMessage = '';
+$activeAccount = '';
+
+if (!$_SESSION["active-user"]) {
+    header('Location: index.php');
+}
+
+//
+$statement = $pdo -> prepare("SELECT id, email, pass FROM emails");
+$statement -> execute();
+$accounts = $statement -> fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($accounts as $account):
+    if ($_SESSION["active-user"] === $account['email']) {
+        $_SESSION["active-userID"] = $account['id'];
+    }
+endforeach;
+
+$groceryListTitle = $_SESSION["active-userID"].'MyGroceryList';
 
 // PRODUCTS TABLE
 $statement = $pdo->prepare("CREATE TABLE IF NOT EXISTS PRODUCTS
@@ -79,7 +43,7 @@ $statement = $pdo->prepare("CREATE TABLE IF NOT EXISTS PRODUCTS
 $statement -> execute();
 
 // MyGroceryList TABLE
-$statement = $pdo->prepare("CREATE TABLE IF NOT EXISTS MyGroceryList
+$statement = $pdo->prepare("CREATE TABLE IF NOT EXISTS $groceryListTitle
                 (
                     USER_ID	        int	    NOT NULL,
                     PRODUCT_ID      int		NOT NULL AUTO_INCREMENT,
@@ -117,19 +81,19 @@ $statement -> execute();
 $prices = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 // CATEGORIES TABLE AND QUERY
-$statement = $pdo -> prepare("SELECT distinct Prod_category FROM PRODUCTS ORDER BY PRODUCT_ID");
+$statement = $pdo -> prepare("SELECT distinct Prod_category FROM PRODUCTS ORDER BY Prod_category");
 $statement -> execute();
 $categories = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 // PRODUCTS TABLE AND QUERY
 $statement = $pdo -> prepare("  SELECT DISTINCT prod.PRODUCT_ID PRODUCT_ID, prod.Prod_category Prod_category, prod.Prod_title Prod_title, groc.Alert_Active Alert_Active
-                                FROM MyGroceryList groc
+                                FROM $groceryListTitle groc
                                 INNER JOIN PRODUCTS as prod ON groc.PRODUCT_ID = prod.PRODUCT_ID
                                 ORDER BY prod.Prod_category, prod.Prod_title");
 $statement -> execute();
 $items = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
-$statement = $pdo -> prepare("SELECT * FROM PRODUCTS ORDER BY PRODUCT_ID");
+$statement = $pdo -> prepare("SELECT * FROM PRODUCTS ORDER BY Prod_title");
 $statement -> execute();
 $products = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -152,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             endforeach;
             
             if ($selectedProduct) {
-                $statement = $pdo->prepare("INSERT INTO MyGroceryList (USER_ID, PRODUCT_ID, Alert_Active)
+                $statement = $pdo->prepare("INSERT INTO $groceryListTitle (USER_ID, PRODUCT_ID, Alert_Active)
                             VALUES (1, (SELECT PRODUCT_ID FROM PRODUCTS WHERE Prod_title = :selectedProduct), 0)");
 
                 $statement->execute([':selectedProduct' => $selectedProduct ]);
@@ -189,7 +153,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
                     <a href="quick-compare.php"><span>Quick compare</span></a>
+                    <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
                     <a href="admin-page.php" id="contacts"><span>Contacts</span></a>
+                    <?php } ?>
+                    <a href="logout.php"><span id="logout">Log-out</span></a>
                 </div>
             </div>
             <h3>My Grocery list</h3>
@@ -200,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Category</th>
+                            <th scope="col">Category <?php echo $groceryListTitle ?></th>
                             <th scope="col" class="sorting-choice">Item</th>
                             <th scope="col" class="sorting-choice">Lowest price / Store </th>
                             <th scope="col">Alert active?</th>
@@ -271,7 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <button type="sumbit" class="delete-button">Clear My Grocery List</button>
                 </form>
                 <div></div>   
-                <form class="delete-form" method="post" action="deleteItem.php">
+                <form class="delete-form" method="post" action="my-history.php">
                     <input type="hidden" name="prodID1" value="<?php echo '12' ?>">
                     <button type="sumbit" class="delete-button">Add to My History</button>
                 </form>     

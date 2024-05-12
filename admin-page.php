@@ -1,9 +1,13 @@
 <?php
 
 require_once "DBconnect.php";
-
+session_start();
 $myConnection = new MagebitTask();
 $pdo = $myConnection -> connect();
+
+if ($_SESSION["active-user"] != 'admin@admin.com') {
+    header("Location: index.php");
+}
 
 //declaring key initial values for page display,
 //and getting user-selected choices during user interaction
@@ -79,10 +83,13 @@ $emails = $statement -> fetchAll(PDO::FETCH_ASSOC);
             <a href="index.php" id="p-label"></a>
 
             <div id="header-links">
-                <a href="grocery-list.php"><span>My Grocery List</span></a>
-                <a href="quick-compare.php"><span>Quick compare</span></a>
-                <a href="#"><span>Contacts</span></a>
-            </div>
+                    <a href="grocery-list.php"><span>My Grocery List</span></a>
+                    <a href="quick-compare.php"><span>Quick compare</span></a>
+                    <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
+                    <a href="admin-page.php" id="contacts"><span>Contacts</span></a>
+                    <?php } ?>
+                    <a href="logout.php"><span id="logout">Log-out</span></a>
+                </div>
         </header>
         
         <article>

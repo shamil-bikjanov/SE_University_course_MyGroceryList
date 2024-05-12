@@ -5,6 +5,13 @@ const error2 = document.querySelector('#error2'); // email field is NOT blank
 const error3 = document.querySelector('#error3'); // T&C are accepted (checkmark)
 const error4 = document.querySelector('#error4'); // '.co' emails condition
 const button1 = document.querySelector('#submit-button');
+const welcomeSection = document.querySelector('#welcome');
+const registrationFields = document.querySelector('#registration-fields');
+const registerButton = document.querySelector('#register');
+const inputPassword = document.querySelector('#password-verify');
+const passwordInputParent = document.querySelector('#password-input-parent');
+const loginConf = document.querySelector('#login-conf');
+
 var selectedCategory = document.querySelector('#categories');
 
 var changedText = document.getElementById('changed');
@@ -16,11 +23,11 @@ var changedText = document.getElementById('changed');
 document.getElementById("categories").onchange = listQ;*/
 
 let products = [
-    ['Fruits and vegetables', 'Pears'],
     ['Fruits and vegetables', 'Apples'],
-    ['Fruits and vegetables', 'Potatoes'],
     ['Fruits and vegetables', 'Carrots'],
     ['Fruits and vegetables', 'Onions'],
+    ['Fruits and vegetables', 'Pears'],
+    ['Fruits and vegetables', 'Potatoes'],
     ['Dairy products and eggs', 'Eggs APF M size, 10pcs'],
     ['Dairy products and eggs', 'Eggs L size, 10pcs'],
     ['Dairy products and eggs', 'Milk 2%, Marge, UHT, 1L']
@@ -48,6 +55,23 @@ function updateItems(){
 }
 function listQ(){
     changedText.textContent = products[0][1];
+}
+
+function registerUser() {
+    registrationFields.classList.remove("hidden");    
+    registrationFields.setAttribute('class', 'visible');
+    welcomeSection.setAttribute('class', 'hidden');
+    loginConf.value = "registration";
+}
+function loginUser() {
+    document.querySelector('h3').innerHTML = "Enter your account details";
+    document.querySelector('h5').innerHTML = "Please enter your registered email and password";
+    registrationFields.classList.remove("hidden");    
+    registrationFields.setAttribute('class', 'visible');
+    welcomeSection.setAttribute('class', 'hidden');
+    passwordInputParent.setAttribute('class', 'hidden');
+    inputPassword.setAttribute('placeholder', 'Enter your password');
+    loginConf.value = "login";
 }
 
 //document.getElementById("categories").onchange = listQ();
@@ -182,8 +206,8 @@ function enableButton() {
         button1.disabled = true;
     }
 }
-
-/* // final step for Task-2
+/*
+ // final step for Task-2
 document.querySelector('#submit-form').addEventListener('submit', function() {
     if (!button1.disabled) {
         //event.preventDefault();

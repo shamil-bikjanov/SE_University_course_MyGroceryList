@@ -75,6 +75,8 @@ header {
     color: white;
 }
 
+
+
 #p-logo {    
     position: relative;
     left: 0;
@@ -228,7 +230,7 @@ thead th:nth-child(4) {
 .table thead th {
     vertical-align: bottom;
     border-bottom: 2px solid #E3E3E4;
-    background-color: rgb(79, 226, 79, 0.75);
+    background-color: rgba(79, 226, 79, 0.75);
 }
     
 .table tbody + tbody {
