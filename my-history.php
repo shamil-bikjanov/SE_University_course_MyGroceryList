@@ -58,35 +58,38 @@ $statement = $pdo -> prepare("  SELECT
 $statement -> execute();
 $items = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
-foreach($items as $item):
-    $sumCost += ($item['PROD_price'] * $item['Prod_amount']);
-    $statement = $pdo->prepare("INSERT INTO $myHistoryTitle (Prod_title, Prod_price, Record_date, Store_Name)
-                            VALUES (:Prod_title, :PROD_price, CURRENT_TIMESTAMP, ( SELECT Store_Name 
-                                                                          FROM STORES 
-                                                                          INNER JOIN PRICES ON PRICES.STORE_ID = STORES.STORE_ID
-                                                                          WHERE PRICES.PROD_price = :PROD_price
-                                                                          AND PRICES.PRODUCT_ID = :PRODUCT_ID))");
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $statement -> execute([
-        ':Prod_title' => $item['Prod_title'],
-        ':PROD_price' => $item['PROD_price'],
-        ':PRODUCT_ID' => $item['PRODUCT_ID']
-    ]);
-endforeach;
+    foreach($items as $item):
+        $sumCost += ($item['PROD_price'] * $item['Prod_amount']);
+        $statement = $pdo->prepare("INSERT INTO $myHistoryTitle (Prod_title, Prod_price, Record_date, Store_Name)
+                                VALUES (:Prod_title, :PROD_price, CURRENT_TIMESTAMP, ( SELECT Store_Name 
+                                                                            FROM STORES 
+                                                                            INNER JOIN PRICES ON PRICES.STORE_ID = STORES.STORE_ID
+                                                                            WHERE PRICES.PROD_price = :PROD_price
+                                                                            AND PRICES.PRODUCT_ID = :PRODUCT_ID))");
 
-if ($items) {
-    $statement = $pdo->prepare("INSERT INTO $myHistoryTitle (Prod_title, Prod_price, Record_date, Store_Name)
-                                VALUES ('--', :sumCost, CURRENT_TIMESTAMP,'--')");
-    $statement -> execute([':sumCost' => $sumCost]);
-    $sumCost = 0;
+        $statement -> execute([
+            ':Prod_title' => $item['Prod_title'],
+            ':PROD_price' => $item['PROD_price'],
+            ':PRODUCT_ID' => $item['PRODUCT_ID']
+        ]);
+    endforeach;
+
+    if ($items) {
+        $statement = $pdo->prepare("INSERT INTO $myHistoryTitle (Prod_title, Prod_price, Record_date, Store_Name)
+                                    VALUES ('--', :sumCost, CURRENT_TIMESTAMP,'--')");
+        $statement -> execute([':sumCost' => $sumCost]);
+        $sumCost = 0;
+    }
+
+    $statement = $pdo -> prepare("TRUNCATE TABLE $groceryListTitle");
+    $statement -> execute();
 }
 
 $statement = $pdo -> prepare("SELECT * FROM $myHistoryTitle");
 $statement -> execute();
 $historyList = $statement -> fetchAll(PDO::FETCH_ASSOC);
-
-$statement = $pdo -> prepare("TRUNCATE TABLE $groceryListTitle");
-$statement -> execute();
 ?>
 
 
