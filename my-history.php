@@ -40,7 +40,7 @@ $statement -> execute();
 $prices = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 // CATEGORIES TABLE AND QUERY
-$statement = $pdo -> prepare("SELECT distinct Prod_category FROM PRODUCTS ORDER BY PRODUCT_ID");
+$statement = $pdo -> prepare("SELECT distinct Prod_category, PRODUCT_ID FROM PRODUCTS ORDER BY PRODUCT_ID");
 $statement -> execute();
 $categories = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -67,7 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                             FROM STORES 
                                                                             INNER JOIN PRICES ON PRICES.STORE_ID = STORES.STORE_ID
                                                                             WHERE PRICES.PROD_price = :PROD_price
-                                                                            AND PRICES.PRODUCT_ID = :PRODUCT_ID))");
+                                                                            AND PRICES.PRODUCT_ID = :PRODUCT_ID
+                                                                            LIMIT 1))");
 
         $statement -> execute([
             ':Prod_title' => $item['Prod_title'],
@@ -106,12 +107,27 @@ $historyList = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 <body>
     <aside>
-        <header>
-            <div>
+    <header>
+            <div class="header-container">
                 <div id="icons">
                     <a href="index.php" id="p-logo"></a>
                     <a href="index.php" id="p-label"></a>
                 </div>
+                
+                <label class="burger">
+                    <input type="checkbox">
+                    <span class="menu"> <span class="hamburger"></span> </span>
+                    <ul>
+                    <li> <a href="grocery-list.php">My Grocery List</a> </li>
+                    <li> <a href="quick-compare.php">Quick compare</a> </li>
+                    <li> <a href="my-history.php">My History</a> </li>
+                    <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
+                        <li><a href="admin-page.php" id="contacts"><span>Contacts</span></a></li>
+                    <?php } ?> 
+                    <li><a href="logout.php"><span id="logout">Log-out</span></a></li>
+                    
+                    </ul>
+                </label>
 
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
@@ -125,7 +141,7 @@ $historyList = $statement -> fetchAll(PDO::FETCH_ASSOC);
             </div>
             <h3>My History</h3>
         </header>
-        
+
         <article>
             <form class="search-form" action="" method="post">
                 <table class="table">

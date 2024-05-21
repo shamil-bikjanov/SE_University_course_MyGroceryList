@@ -53,7 +53,7 @@ foreach($prices as $price):
 endforeach;
 
 // CATEGORIES TABLE AND QUERY
-$statement = $pdo -> prepare("SELECT distinct Prod_category FROM PRODUCTS ORDER BY PRODUCT_ID");
+$statement = $pdo -> prepare("SELECT distinct Prod_category, PRODUCT_ID FROM PRODUCTS ORDER BY PRODUCT_ID");
 $statement -> execute();
 $categories = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -84,11 +84,26 @@ $products = $statement -> fetchAll(PDO::FETCH_ASSOC);
 <body>
     <aside>
         <header>
-            <div>
+            <div class="header-container">
                 <div id="icons">
                     <a href="index.php" id="p-logo"></a>
                     <a href="index.php" id="p-label"></a>
                 </div>
+                
+                <label class="burger">
+                    <input type="checkbox">
+                    <span class="menu"> <span class="hamburger"></span> </span>
+                    <ul>
+                    <li> <a href="grocery-list.php">My Grocery List</a> </li>
+                    <li> <a href="quick-compare.php">Quick compare</a> </li>
+                    <li> <a href="my-history.php">My History</a> </li>
+                    <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
+                        <li><a href="admin-page.php" id="contacts"><span>Contacts</span></a></li>
+                    <?php } ?> 
+                    <li><a href="logout.php"><span id="logout">Log-out</span></a></li>
+                    
+                    </ul>
+                </label>
 
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
@@ -100,14 +115,14 @@ $products = $statement -> fetchAll(PDO::FETCH_ASSOC);
                     <a href="logout.php"><span id="logout">Log-out</span></a>
                 </div>
             </div>
-            <h3>Quick compare</h3>
+            <h3>My Grocery list</h3>
         </header>
         
         <article>
             <form class="search-form" action="addItem.php" method="post">
                 <table class="table">
                     <thead>
-                        <tr>
+                        <tr class="head-show">
                             <td></td>
                             <td> 
                                 <select id="categories" name='store1'> 
@@ -178,30 +193,60 @@ $products = $statement -> fetchAll(PDO::FETCH_ASSOC);
                             <tr>
                                 <td><b><?php echo $item['Prod_title'] ?></b></td>
                                 <td class="datetime">
-                                    <?php foreach($prices as $i => $price): ?>
-                                        <?php if ($price['selectPosition'] == 1){?>
-                                            <?php if ($item['PRODUCT_ID'] == $price['PRODUCT_ID']){?>
-                                                <?php echo $price['PROD_price'].' EUR' ?>
-                                            <?php } ?>
-                                        <?php } ?>
-                                    <?php endforeach; ?>
+                                    <div class="cell">
+                                        <p class="shop-name-cell"><?php if($store1 == ''){ ?>
+                                                --
+                                            <?php }else{ ?>
+                                                <?php echo $store1 ?>
+                                            <?php } ?>:
+                                        </p>
+                                        <p>
+                                            <?php foreach($prices as $i => $price): ?>
+                                                <?php if ($price['selectPosition'] == 1){?>
+                                                    <?php if ($item['PRODUCT_ID'] == $price['PRODUCT_ID']){?>
+                                                        <?php echo $price['PROD_price'].' EUR' ?>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php endforeach; ?>
+                                        </p>
+                                    </div>
                                 </td>
                                 <td class="datetime">
-                                    <?php foreach($prices as $i => $price): ?>
-                                        <?php if ($price['selectPosition'] == 2){?>
-                                            <?php if ($item['PRODUCT_ID'] == $price['PRODUCT_ID']){?>
-                                                <?php echo $price['PROD_price'].' EUR' ?>
-                                            <?php } ?>
-                                        <?php } ?>
-                                    <?php endforeach; ?>
+                                    <div class="cell">
+                                        <p class="shop-name-cell"><?php if($store2 == ''){ ?>
+                                                --
+                                            <?php }else{ ?>
+                                                <?php echo $store2 ?>
+                                            <?php } ?>:
+                                        </p>
+                                        <p>
+                                            <?php foreach($prices as $i => $price): ?>
+                                                <?php if ($price['selectPosition'] == 2){?>
+                                                    <?php if ($item['PRODUCT_ID'] == $price['PRODUCT_ID']){?>
+                                                        <?php echo $price['PROD_price'].' EUR' ?>
+                                                    <?php } ?>
+                                                <?php } ?>
+                                            <?php endforeach; ?>
+                                        </p>
+                                    </div>
                                 </td><td class="datetime">
-                                    <?php foreach($prices as $i => $price): ?>
-                                        <?php if ($price['selectPosition'] == 3){?>
-                                            <?php if ($item['PRODUCT_ID'] == $price['PRODUCT_ID']){?>
-                                                <?php echo $price['PROD_price'].' EUR' ?>
+                                <div class="cell">
+                                    <p class="shop-name-cell"><?php if($store3 == ''){ ?>
+                                            --
+                                        <?php }else{ ?>
+                                            <?php echo $store3 ?>
+                                        <?php } ?>:
+                                    </p>
+                                    <p>
+                                        <?php foreach($prices as $i => $price): ?>
+                                            <?php if ($price['selectPosition'] == 3){?>
+                                                <?php if ($item['PRODUCT_ID'] == $price['PRODUCT_ID']){?>
+                                                    <?php echo $price['PROD_price'].' EUR' ?>
+                                                <?php } ?>
                                             <?php } ?>
-                                        <?php } ?>
-                                    <?php endforeach; ?>
+                                        <?php endforeach; ?>
+                                    </p>
+                                    </div>
                                 </td>
                             </tr>
 

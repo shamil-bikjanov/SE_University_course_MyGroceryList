@@ -3,6 +3,8 @@
 require_once "DBconnect.php";
 
 session_start();
+if (!@$_SESSION["active-user"]) {$_SESSION["active-user"] ='';}
+
 
 $myConnection = new MagebitTask();
 $pdo = $myConnection -> connect();
@@ -11,7 +13,7 @@ $statement = $pdo->prepare('CREATE TABLE IF NOT EXISTS emails
 (
     id		    int     AUTO_INCREMENT  NOT NULL,
 	email	    varchar(50) 			NOT NULL,
-	pass        varchar(50) 			NOT NULL,
+	passHash    varchar(500)     		NOT NULL,
 	code	    varchar(20)				NOT NULL,
     datetime    datetime                NOT NULL,
     PRIMARY KEY (id)
@@ -26,7 +28,7 @@ $statement1 = $pdo->prepare('CREATE TABLE IF NOT EXISTS STORES
 )');
 $statement1 -> execute();
 
-$statement = $pdo -> prepare("SELECT id, email, pass FROM emails");
+$statement = $pdo -> prepare("SELECT id, email, passHash FROM emails");
 $statement -> execute();
 $accounts = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -39,6 +41,7 @@ $checkbox = '';
 $checkboxError = '';
 $duplicateAccountError = 0;
 $loginConf = '';
+$passError = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $loginConf = trim($_POST['login-conf']);
@@ -51,6 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = trim($_POST['email1']);
         $pass = trim($_POST['pass']);
         $passConf = trim($_POST['passConf']);
+        $hashedPassword = password_hash($passConf, PASSWORD_DEFAULT);
 
         foreach ($accounts as $account):
             if ($account['email'] === $email) { $duplicateAccountError = 1; }
@@ -58,10 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //validating if no email has been provided/entered
         if (!$email) {
-            $emailError = 'Email address is required';
-        if (!$pass) {
-            $passError = 'Password is required';
-        }
+            $emailError = 'Email address is required';        
 
     //using php function 'filter_var()' to validate email input
         } else if ($duplicateAccountError == 1) {
@@ -70,9 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $emailError = 'Please provide a valid email address';
 
     //combination of php-functions 'strtpos()' and 'substr()' to check if email ends with '.co'
-        } else if (substr($email, strrpos($email, '.') + 1) == 'co') {
-            $emailError = 'We are not accepting subscriptions from Colombia emails';
-        }
+        } 
 
     //validating if user clicked the checkbox using php-function 'isset()'
         if (!isset($_POST['checkbox'])) {
@@ -80,18 +79,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             //$checkbox = 'checked';
         }
+        if (!$pass || !$passConf ) {
+            $emailError = 'Password is required';
+            $passError = $emailError;
+        } else if ($pass != $passConf) {
+            $emailError = 'Passwords do not match';
+            $passError = $emailError;
+        }
 
     //only if no errors registered proceeding with data intry into database table
-        if (!$emailError && !$checkboxError) {
+        if (!$emailError && !$checkboxError && !$passError) {
             $code = substr($email, strpos($email, '@') + 1);
             $dateTime = date('Y-m-d H:i:s');
 
-            $statement = $pdo->prepare("INSERT INTO emails (email, pass, code, datetime)
+            $statement = $pdo->prepare("INSERT INTO emails (email, passHash, code, datetime)
                             VALUES (:email, :pass, :code, :dateTime)");
 
             $statement->execute([
                 ':email' => $email,
-                ':pass' => $pass,
+                ':pass' => $hashedPassword,
                 ':code' => $code,
                 ':dateTime' => $dateTime
             ]);
@@ -102,12 +108,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     else if ($loginConf == 'login') {
         $email = trim($_POST['email1']);
         $passConf = trim($_POST['passConf']);
+        //$isPasswordValid = password_verify($passConf, $hashedPassword);
+        $emailError = 'Email is not registered';
 
         foreach ($accounts as $account):
             if ($account['email'] === $email) { 
-                if ($account['pass'] != $passConf) {
-                    $emailError = 'Password does not match'; 
+                if (!password_verify($passConf, $account['passHash'])) {
+                    $emailError = 'entered password is wrong';
+                    break; 
                 }
+                $emailError = '';
              }
         endforeach;
 
@@ -155,15 +165,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <aside>
         <header>
+            <div class="header-container">
+                <div id="icons">
+                    <a href="index.php" id="p-logo"></a>
+                    <a href="index.php" id="p-label"></a>
+                </div>
+                
+                <label class="burger">
+                    <input type="checkbox">
+                    <span class="menu"> <span class="hamburger"></span> </span>
+                    <ul>
+                    <li> <a href="grocery-list.php">My Grocery List</a> </li>
+                    <li> <a href="#">How this works</a> </li>
+                    <li> <a href="#">Contacts</a> </li>
+                    </ul>
+                </label>
 
-<!-- added anchor tags to logo and 'How it works' for links to home page and admin page -->
-            <a href="index.php" id="p-logo"></a>
-            <a href="index.php" id="p-label"></a>
-            
-            <div id="header-links">
-                <a href="grocery-list.php"><span>My Grocery List</span></a>
-                <a href="#"><span>How this works</span></a>
-                <a href="#"><span>Contacts</span></a>
+                <div id="header-links">
+                    <a href="grocery-list.php"><span>My Grocery List</span></a>
+                    <a href="#"><span>How this works</span></a>
+                    <a href="#"><span>Contacts</span></a>
+                </div>
             </div>
         </header>
         
@@ -185,56 +207,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <?php }else { ?>
                 <div id="welcome" class="hidden" >
             <?php } ?> 
-            </div>            
-            <?php if (!$email) {?>
-                <div id="registration-fields" class="hidden">
-            <?php } else { ?>                
-                <div id="registration-fields">
-            <?php } ?>             
-            <?php if (!$passConf) {?>
-                <h3>Create an account</h3>
-                <h5>Register your new account to get access to beast deals in the city. Or <a href="#" onmousedown="loginUser()"><span><b>login</b></span></a> with the existing account</h5>
-                <form id="submit-form" action="" method="post" name="form1">
-                    
-                    <input id="login-conf" class="hidden" type="text" name="login-conf" value="<?php echo $loginConf ?>">
-                    <input id="email-input" type="text" placeholder="Type your email address here…" 
-                    name="email1" value="<?php echo $email ?>">
-                    <div id="password-input-parent">
-                        <input id="password-input" type="password" placeholder="Choose your password…" 
-                        name="pass" value="<?php echo $pass ?>">
-                    </div>
-            <?php } else { ?>
-                <h3>Enter your account details</h3>
-                <h5>Please enter your registered email and password</h5>
-                <form id="submit-form" action="" method="post" name="form1">                    
-                    <input id="login-conf" class="hidden" type="text" name="login-conf" value="<?php echo $loginConf ?>">
-                    <input id="email-input" type="text" placeholder="Type your email address here…" 
-                    name="email1" value="<?php echo $email ?>">
-            <?php } ?>
-                    <div id="password-verify-parent">
-                        <input id="password-verify" type="password" placeholder="Re-enter chosen password…" 
-                        name="passConf" value="<?php echo $pass ?>">                   
-                        <button id="submit-button" type="submit" name="submit" value="Submit"></button>
-                        <div id="pretend-button" class="hidden"></div>
-                    </div>
-                    
-                    <span id="email-input-hover-text">email </span>
-                    <div class="checkbox">
-                        <input type="checkbox" id="email-checkbox" name="checkbox" <?php echo $checkbox ?>>
-                        <label for="email-checkbox">I agree to <a href="#">the terms of service</a></label>
-                    </div>
-                    <?php if ($emailError) :?>
-                        <div class="visible error error1"><?php echo $emailError ?></div>
-                    <?php endif; ?>
-                    <?php if ($checkboxError) :?>
-                        <div class="visible error error3"><?php echo $checkboxError ?></div>
-                    <?php endif; ?>
-                    <div id="error1" name="error1" class="hidden error error1">Please provide a valid email address</div>
-                    <div id="error2" name="error2" class="hidden error error2">Email address is required</div>
-                    <div id="error3" name="error3" class="hidden error error3">You must accept the terms and conditions</div>
-                    <div id="error4" name="error4" class="hidden error error4">We are not accepting subscriptions from Colombia emails</div>                
-                </form>
-            </div>
+            </div>       
+            <div class="registration-wrapper hidden">
+                <?php if (!$email) {?>
+                    <div id="registration-fields">
+                <?php } else { ?>                
+                    <div id="registration-fields">
+                <?php } ?>             
+                <?php if (!$passConf) {?>
+                    <h3>Create an account</h3>
+                    <h5>Register your new account to get access to beast deals in the city. Or <a href="#" onmousedown="loginUser()"><span><b>login</b></span></a> with the existing account</h5>
+                    <form id="submit-form" action="" method="post" name="form1">
+                        
+                        <input id="login-conf" class="hidden" type="text" name="login-conf" value="<?php echo $loginConf ?>">
+                        <input id="email-input" type="text" placeholder="Type your email address here…" 
+                        name="email1" value="<?php echo $email ?>">
+                        <div id="password-input-parent">
+                            <input id="password-input" type="password" placeholder="Choose your password…" 
+                            name="pass" value="<?php echo $pass ?>">
+                        </div>
+                <?php } else { ?>
+                    <h3>Enter your account details</h3>
+                    <h5>Please enter your registered email and password</h5>
+                    <form id="submit-form" action="" method="post" name="form1">                    
+                        <input id="login-conf" class="hidden" type="text" name="login-conf" value="<?php echo $loginConf ?>">
+                        <input id="email-input" type="text" placeholder="Type your email address here…" 
+                        name="email1" value="<?php echo $email ?>">
+                <?php } ?>
+                        <div id="password-verify-parent">
+                            <input id="password-verify" type="password" placeholder="Re-enter chosen password…" 
+                            name="passConf" value="<?php echo $pass ?>">                   
+                            <button id="submit-button" type="submit" name="submit" value="Submit"></button>
+                            <div id="pretend-button" class="hidden"></div>
+                        </div>
+                        
+                        <span id="email-input-hover-text">email </span>
+                        <div class="checkbox">
+                            <input type="checkbox" id="email-checkbox" name="checkbox" <?php echo $checkbox ?>>
+                            <label for="email-checkbox">I agree to <a href="#">the terms of service</a></label>
+                        </div>
+                        <?php if ($emailError) :?>
+                            <div class="visible error error1"><?php echo $emailError ?></div>
+                        <?php endif; ?>
+                        <?php if ($checkboxError) :?>
+                            <div class="visible error error3"><?php echo $checkboxError ?></div>
+                        <?php endif; ?>
+                        <div id="error1" name="error1" class="hidden error error1">Please provide a valid email address</div>
+                        <div id="error2" name="error2" class="hidden error error2">Email address is required</div>
+                        <div id="error3" name="error3" class="hidden error error3">You must accept the terms and conditions</div>
+                    </form>
+                </div>
+            </div>     
             <footer>
                 <div id="line"></div>
                 <div id="all-icons" class="all-icons">

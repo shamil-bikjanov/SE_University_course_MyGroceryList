@@ -18,8 +18,8 @@ if (!$_SESSION["active-user"]) {
     header('Location: index.php');
 }
 
-//
-$statement = $pdo -> prepare("SELECT id, email, pass FROM emails");
+
+$statement = $pdo -> prepare("SELECT id, email FROM emails");
 $statement -> execute();
 $accounts = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
@@ -144,11 +144,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <aside>
         <header>
-            <div>
+            <div class="header-container">
                 <div id="icons">
                     <a href="index.php" id="p-logo"></a>
                     <a href="index.php" id="p-label"></a>
                 </div>
+                
+                <label class="burger">
+                    <input type="checkbox">
+                    <span class="menu"> <span class="hamburger"></span> </span>
+                    <ul>
+                    <li> <a href="grocery-list.php">My Grocery List</a> </li>
+                    <li> <a href="quick-compare.php">Quick compare</a> </li>
+                    <li> <a href="my-history.php">My History</a> </li>
+                    <?php if ($_SESSION["active-user"] === 'admin@admin.com') { ?>
+                        <li><a href="admin-page.php" id="contacts"><span>Contacts</span></a></li>
+                    <?php } ?> 
+                    <li><a href="logout.php"><span id="logout">Log-out</span></a></li>
+                    
+                    </ul>
+                </label>
 
                 <div id="header-links">
                     <a href="grocery-list.php"><span>My Grocery List</span></a>
@@ -168,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Category <?php echo $groceryListTitle ?></th>
+                            <th scope="col">Category</th>
                             <th scope="col" class="sorting-choice">Item</th>
                             <th scope="col" class="sorting-choice">Lowest price / Store </th>
                             <th scope="col">Alert active?</th>
@@ -197,9 +212,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                                 <td>
                                 <?php if ($item['Alert_Active'] == 1){?>
-                                    <input type="checkbox" class="alert-checkbox" name="<?php echo 'item'.$item['PRODUCT_ID']?>" value="<?php echo $item['Alert_Active']?>" <?php echo 'checked'?>>
+                                    <div class="last-row">
+                                        <input type="checkbox" class="alert-checkbox" name="<?php echo 'item'.$item['PRODUCT_ID']?>" value="<?php echo $item['Alert_Active']?>" <?php echo 'checked'?>>
+                                        <p class="last-row-text">Alert active?</p>
+                                    </div>
+                                    
                                 <?php } else {?>                                    
-                                    <input type="checkbox" class="alert-checkbox" name="<?php echo 'item'.$item['PRODUCT_ID']?>" value="<?php echo $item['Alert_Active']?>">
+                                    <div class="last-row">
+                                        <input type="checkbox" class="alert-checkbox" name="<?php echo 'item'.$item['PRODUCT_ID']?>" value="<?php echo $item['Alert_Active']?>">
+                                        <p class="last-row-text">Alert active?</p>
+                                    </div>
                                 <?php } ?>
                                 </td>
                             </tr>
@@ -240,7 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
                 <div></div>   
                 <form class="delete-form" method="post" action="my-history.php">
-                    <input type="hidden" name="prodID1" value="<?php echo '12' ?>">
+                    <input type="hidden" name="prodID1" value="42">
                     <button type="sumbit" class="delete-button">Add to My History</button>
                 </form>     
             <footer>                

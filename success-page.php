@@ -15,18 +15,32 @@
 
 <body>
     <aside>
-        <header>
-            <a href="index.php" id="p-logo"></a>
-            <a href="index.php" id="p-label"></a>
-            
-            <div id="header-links">
-                <a href="#"><span>About</span></a>
-                <a href="grocery-list.php"><span>My Grocery List</span></a>
-                <a href="#"><span>Contact</span></a>
+    <header>
+            <div class="header-container">
+                <div id="icons">
+                    <a href="index.php" id="p-logo"></a>
+                    <a href="index.php" id="p-label"></a>
+                </div>
+                
+                <label class="burger">
+                    <input type="checkbox">
+                    <span class="menu"> <span class="hamburger"></span> </span>
+                    <ul>
+                    <li> <a href="#">About</a> </li>
+                    <li> <a href="grocery-list.php">My Grocery List</a> </li>
+                    <li> <a href="#">Contact</a> </li>
+                    </ul>
+                </label>
+
+                <div id="header-links">
+                    <a href="#"><span>About</span></a>
+                    <a href="grocery-list.php"><span>My Grocery List</span></a>
+                    <a href="#"><span>Contact</span></a>
+                </div>
             </div>
         </header>
         
-        <article>
+        <article class="success-article">
             <div id="success-logo" class="visible">
                 <div></div>
                 <div></div>

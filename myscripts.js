@@ -1,12 +1,11 @@
 const email1 = document.querySelector('#email-input');
-const checkbox = document.querySelector('input[type="checkbox"]');
+const checkbox = document.querySelector('#email-checkbox');
 const error1 = document.querySelector('#error1'); // valid email is provided
 const error2 = document.querySelector('#error2'); // email field is NOT blank
 const error3 = document.querySelector('#error3'); // T&C are accepted (checkmark)
-const error4 = document.querySelector('#error4'); // '.co' emails condition
 const button1 = document.querySelector('#submit-button');
 const welcomeSection = document.querySelector('#welcome');
-const registrationFields = document.querySelector('#registration-fields');
+const registrationFields = document.querySelector('.registration-wrapper');
 const registerButton = document.querySelector('#register');
 const inputPassword = document.querySelector('#password-verify');
 const passwordInputParent = document.querySelector('#password-input-parent');
@@ -23,14 +22,62 @@ var changedText = document.getElementById('changed');
 document.getElementById("categories").onchange = listQ;*/
 
 let products = [
-    ['Fruits and vegetables', 'Apples'],
-    ['Fruits and vegetables', 'Carrots'],
-    ['Fruits and vegetables', 'Onions'],
-    ['Fruits and vegetables', 'Pears'],
-    ['Fruits and vegetables', 'Potatoes'],
-    ['Dairy products and eggs', 'Eggs APF M size, 10pcs'],
-    ['Dairy products and eggs', 'Eggs L size, 10pcs'],
-    ['Dairy products and eggs', 'Milk 2%, Marge, UHT, 1L']
+    ['Fruits and Vegetables', 'Apple'],
+    ['Fruits and Vegetables', 'Banana'],
+    ['Fruits and Vegetables', 'Bell Pepper'],
+    ['Fruits and Vegetables', 'Blueberry'],
+    ['Fruits and Vegetables', 'Broccoli'],
+    ['Fruits and Vegetables', 'Carrot'],
+    ['Fruits and Vegetables', 'Cucumber'],
+    ['Fruits and Vegetables', 'Grapes'],
+    ['Fruits and Vegetables', 'Onion'],
+    ['Fruits and Vegetables', 'Orange'],
+    ['Fruits and Vegetables', 'Potato'],
+    ['Fruits and Vegetables', 'Pears'],
+    ['Fruits and Vegetables', 'Spinach'],
+    ['Fruits and Vegetables', 'Strawberry'],
+    ['Fruits and Vegetables', 'Tomato'],
+    ['Fruits and Vegetables', 'Watermelon'],
+    ['Dairy Products and Eggs', 'Milk (Whole, Skim, or 2%)'],
+    ['Dairy Products and Eggs', 'Eggs (Grade A Large, Brown, or Organic)'],
+    ['Dairy Products and Eggs', 'Butter (Salted or Unsalted)'],
+    ['Dairy Products and Eggs', 'Cheese (Cheddar, Mozzarella, or Swiss)'],
+    ['Dairy Products and Eggs', 'Yogurt (Plain, Greek, or Flavored)'],
+    ['Dairy Products and Eggs', 'Cream (Heavy Cream or Half-and-Half)'],
+    ['Dairy Products and Eggs', 'Sour Cream'],
+    ['Dairy Products and Eggs', 'Cottage Cheese'],
+    ['Dairy Products and Eggs', 'Whipped Cream'],
+    ['Dairy Products and Eggs', 'Egg Whites (Carton)'],
+    ['Meat and Seafood', 'Fresh Atlantic Salmon Fillets'],
+    ['Meat and Seafood', 'Grass-fed Beef Ribeye Steaks'],
+    ['Meat and Seafood', 'Organic Chicken Breast'],
+    ['Meat and Seafood', 'Wild-caught Gulf Shrimp'],
+    ['Meat and Seafood', 'Pork Tenderloin'],
+    ['Meat and Seafood', 'Lamb Chops'],
+    ['Meat and Seafood', 'Alaskan King Crab Legs'],
+    ['Meat and Seafood', 'Ground Turkey'],
+    ['Meat and Seafood', 'Swordfish Steaks'],
+    ['Meat and Seafood', 'Italian Sausages'],
+    ['Bakery and Baked Goods', 'Whole Wheat Bread'],
+    ['Bakery and Baked Goods', 'Croissants'],
+    ['Bakery and Baked Goods', 'Blueberry Muffins'],
+    ['Bakery and Baked Goods', 'Bagels'],
+    ['Bakery and Baked Goods', 'Chocolate Chip Cookies'],
+    ['Bakery and Baked Goods', 'Cinnamon Rolls'],
+    ['Bakery and Baked Goods', 'French Baguette'],
+    ['Bakery and Baked Goods', 'Sourdough Bread'],
+    ['Bakery and Baked Goods', 'Pita Bread'],
+    ['Bakery and Baked Goods', 'Gluten-Free Brownies'],
+    ['Beverages', 'Orange Juice'],
+    ['Beverages', 'Green Tea'],
+    ['Beverages', 'Cola'],
+    ['Beverages', 'Almond Milk'],
+    ['Beverages', 'Sparkling Water'],
+    ['Canned and Packaged Foods', 'Canned Black Beans'],
+    ['Canned and Packaged Foods', 'Tomato Sauce'],
+    ['Canned and Packaged Foods', 'Chicken Noodle Soup'],
+    ['Canned and Packaged Foods', 'Tuna in Water'],
+    ['Canned and Packaged Foods', 'Instant Ramen Noodles']
 ];
 
 //var newOption = new Option('Option Text','Option Value');
@@ -125,18 +172,8 @@ function errorsValidation() {
             hideError(error1);
         }
         
-        if (endsWith(email1.value, ".co")) {
-            showError(error4);
-        } else {
-            hideError(error4);
-        }
         entryAttemptReceived = true;
     }    
-}
-
-// function below is for 'subscription from Colombia' condition validation
-function endsWith(str, suffix) {
-    return str.indexOf(suffix, str.length - suffix.length) !== -1;
 }
 
 // ONLY after we confirm first attempt to submit the form we start validating email on user input
@@ -189,7 +226,7 @@ function showError(error) {
 // function that checks if no errors are on display 
 // ...and enables/disables submit button accordingly
 function enableButton() {
-    var errors = [error1, error2, error3, error4];
+    var errors = [error1, error2, error3];
     var noErrors = true;
     errors.forEach(function(error) {
         if (error.display == 'visible') {
