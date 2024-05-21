@@ -214,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php } else { ?>                
                     <div id="registration-fields">
                 <?php } ?>             
-                <?php if (!$passConf) {?>
+                <?php if (!$passConf || $loginConf == "registration") {?>
                     <h3>Create an account</h3>
                     <h5>Register your new account to get access to beast deals in the city. Or <a href="#" onmousedown="loginUser()"><span><b>login</b></span></a> with the existing account</h5>
                     <form id="submit-form" action="" method="post" name="form1">
@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         name="email1" value="<?php echo $email ?>">
                         <div id="password-input-parent">
                             <input id="password-input" type="password" placeholder="Choose your password…" 
-                            name="pass" value="<?php echo $pass ?>">
+                            name="pass" value="">
                         </div>
                 <?php } else { ?>
                     <h3>Enter your account details</h3>
@@ -236,7 +236,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php } ?>
                         <div id="password-verify-parent">
                             <input id="password-verify" type="password" placeholder="Re-enter chosen password…" 
-                            name="passConf" value="<?php echo $pass ?>">                   
+                            name="passConf" value="">                   
                             <button id="submit-button" type="submit" name="submit" value="Submit"></button>
                             <div id="pretend-button" class="hidden"></div>
                         </div>

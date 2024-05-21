@@ -21,6 +21,8 @@ var changedText = document.getElementById('changed');
 }
 document.getElementById("categories").onchange = listQ;*/
 
+
+
 let products = [
     ['Fruits and Vegetables', 'Apple'],
     ['Fruits and Vegetables', 'Banana'],
@@ -102,6 +104,16 @@ function updateItems(){
 }
 function listQ(){
     changedText.textContent = products[0][1];
+}
+
+
+if(loginConf.value){
+    if(loginConf.value === "login"){
+        loginUser();
+    }
+    else if (loginConf.value === "registration"){
+        registerUser();
+    }
 }
 
 function registerUser() {
